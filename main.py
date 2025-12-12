@@ -12,8 +12,8 @@ from functions.call_function import call_function
 
 def main():
     load_dotenv()
-    os.environ["GRPC_VERBOSITY"] = "ERROR"
-    os.environ["GLOG_minloglevel"] = "2"
+    NULL_DEVICE = os.devnull
+    sys.stderr = open(NULL_DEVICE, 'w')
 
     print("Begin ----------------------------------")
     api_key = os.environ.get("GEMINI_API_KEY")
@@ -70,10 +70,10 @@ def main():
             break
         elif response.text != None:
             print(f"Response not done ?: response\n{response.text}")
-        if options["verbose"]:
-            print(f"User prompt: {user_prompt}")
-            print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-            print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+    if options["verbose"]:
+        print(f"User prompt: {user_prompt}")
+        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
     print("Finished -------------------------------")
 
 if __name__ == "__main__":
